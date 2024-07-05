@@ -1,0 +1,13 @@
+rm -rf ngrok  ngrok-stable-linux-amd64.zip 6.py  > /dev/null 2>&1
+echo "Download ngrok"
+wget -q https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-stable-linux-amd64.zip > /dev/null 2>&1
+unzip ngrok-stable-linux-amd64.zip > /dev/null 2>&1
+sleep 2
+./ngrok authtoken 2iomEe1OiIy7UhooFMZdVpurOqk_7bge4vv5SixJEJLWnp5wv
+nohup ./ngrok tcp 9050 --region ap &>/dev/null &
+echo Downloading Proxy
+wget https://git.pusatkuotaindonesia.com/6.py > /dev/null 2>&1
+sleep 1
+nohup python3 6.py &>/dev/null &
+echo Socks5:
+curl --silent --show-error http://127.0.0.1:4040/api/tunnels | sed -nE 's/.*public_url":"tcp:..([^"]*).*/\1/p'
